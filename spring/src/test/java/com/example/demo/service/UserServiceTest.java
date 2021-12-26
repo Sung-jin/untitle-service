@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.config.annotation.LocalBootTest;
-import com.example.demo.entity.User;
+import com.example.demo.entity.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

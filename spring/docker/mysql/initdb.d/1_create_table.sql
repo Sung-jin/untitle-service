@@ -6,8 +6,34 @@ FLUSH PRIVILEGES;
 
 CREATE TABLE user (
     id bigint(20) NOT NULL AUTO_INCREMENT,
-    email VARCHAR(255),
-    password VARCHAR(2000),
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(2000) NOT NULL,
 
     PRIMARY KEY (id)
+);
+
+CREATE TABLE `order` (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    orderUser bigint(20) NOT NULL,
+
+    PRIMARY KEY (id),
+    CONSTRAINT order_user FOREIGN KEY (orderUser) REFERENCES user(id)
+);
+
+CREATE TABLE product (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    price INT NOT NULL,
+
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE order_product (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    `order` bigint(20) NOT NULL,
+    product bigint(20) NOT NULL,
+
+    PRIMARY KEY (id),
+    CONSTRAINT order_product_order FOREIGN KEY (`order`) REFERENCES `order`(id),
+    CONSTRAINT order_product_product FOREIGN KEY (product) REFERENCES product(id)
 );
