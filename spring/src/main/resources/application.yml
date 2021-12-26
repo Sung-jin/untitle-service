@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    show-sql: true
+
+---
+server.port: 8080
+spring.profiles: local
+
+#spring.jpa:
+#  database: mysql
+
+spring.datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost/demo?characterEncoding=utf8&useUnicode=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull
+  username: demo
+  password: '1q2w3e4r'
