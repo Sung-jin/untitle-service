@@ -25,13 +25,13 @@ class ProductServiceTest {
     @DisplayName("상품 단일/리스트 조회")
     void saveUserTest() throws Exception {
         // given
-        List<Product> products = productService.save(
-                Arrays.stream(new Product[]{
-                        Product.builder().name("상품이름 1").price(10000),
-                        Product.builder().name("상품이름 2").price(20000),
-                        Product.builder().name("상품이름 3").price(30000)
+        List<Product> products = Arrays.stream(
+                new Product[]{
+                        Product.builder().name("상품이름 1").price(10000).build(),
+                        Product.builder().name("상품이름 2").price(20000).build(),
+                        Product.builder().name("상품이름 3").price(30000).build()
                 }).map(product -> productService.save(product))
-        );
+                .collect(Collectors.toList());
 
         // when
         Product productResult = productService.findById(products.get(0).getId());
