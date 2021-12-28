@@ -23,4 +23,8 @@ public class OrderProduct {
 
     @OneToOne(optional = false)
     private Product product;
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

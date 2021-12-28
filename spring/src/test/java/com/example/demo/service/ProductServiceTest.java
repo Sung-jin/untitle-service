@@ -23,7 +23,7 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("상품 단일/리스트 조회")
-    void saveUserTest() throws Exception {
+    void saveUserTest() {
         // given
         List<Product> products = Arrays.stream(
                 new Product[]{

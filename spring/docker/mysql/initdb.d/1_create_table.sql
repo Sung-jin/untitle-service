@@ -15,10 +15,10 @@ CREATE TABLE user (
 
 CREATE TABLE `order` (
     id bigint(20) NOT NULL AUTO_INCREMENT,
-    orderUser bigint(20) NOT NULL,
+    order_user bigint(20) NOT NULL,
 
     PRIMARY KEY (id),
-    CONSTRAINT order_user FOREIGN KEY (orderUser) REFERENCES user(id)
+    CONSTRAINT order_user FOREIGN KEY (order_user) REFERENCES user(id)
 );
 
 CREATE TABLE product (

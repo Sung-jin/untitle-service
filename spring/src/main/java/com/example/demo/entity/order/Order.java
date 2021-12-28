@@ -14,14 +14,20 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "`order`")
 public class Order {
     @Id
     @GeneratedValue
     private Long id;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private User orderUser;
 
     @OneToMany(mappedBy = "order", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<OrderProduct> orderList;
+
+    public Order prepareSave() {
+        this.orderList.forEach(orderProduct -> orderProduct.setOrder(this));
+        return this;
+    }
 }
