@@ -54,12 +54,6 @@ public class OrderService {
                     .map(product -> OrderProduct.builder().product(product).build())
                     .collect(Collectors.toList());
 
-            Order test = Order.builder()
-                    .orderUser(user)
-                    .orderList(orderProducts)
-                    .build()
-                    .prepareSave();
-
             return orderRepository.save(
                     Order.builder()
                             .orderUser(user)

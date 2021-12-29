@@ -1,6 +1,7 @@
 package com.example.demo.entity.order;
 
 import com.example.demo.entity.product.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class OrderProduct {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Order order;
 
     @OneToOne(optional = false)

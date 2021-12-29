@@ -3,16 +3,16 @@
         <p-card class="bg-gray-300">
             <template #content>
                 <div class="overflow-auto" style="max-height: 600px;">
-                    <p-card v-for="(order, idx) in mockOrders" :key="order.id" class="bg-gray-400 my-1">
+                    <p-card v-for="(orderValue, idx) in orders" :key="`order-${orderValue.id}`" class="bg-gray-400 my-1">
                         <template #title>
                             {{ `${idx} 주문` }}
                         </template>
                         <template #content>
                             <div class="grid">
                                 <div class="col-12 flex">
-                                    <p-card v-for="product in order.products" :key="product.id" class="mx-2">
+                                    <p-card v-for="orderList in orderValue.orderList" :key="`product-${orderList.id}`" class="mx-2">
                                         <template #content>
-                                            <span class="font-bold">{{ product.name }}</span>
+                                            <span class="font-bold">{{ orderList.product.name }}</span>
                                         </template>
                                     </p-card>
                                 </div>
@@ -33,26 +33,28 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import {namespace} from "vuex-class";
+
+const OrdersStore = namespace('Orders');
+const AuthenticationStore = namespace('Authentication');
 
 @Options({})
 export default class Index extends Vue {
-    public get mockOrders() {
-        return [...new Array(10)].map((_, idx) => {
-            return {
-                id: idx,
-                products: [...new Array(Math.floor(Math.random() * 100 % 10 + 1))].map((_, pid) => {
-                    return {id: idx, name: `${pid} - 상품이름`};
-                })
-            }
-        });
-    }
+    @OrdersStore.Action private findAll: any;
+    @OrdersStore.State private orders: any;
+    @AuthenticationStore.Action private logout: any;
 
     public go(path: string) {
         this.$router.push(path);
     }
 
-    public logout() {
-        this.$router.push('/');
+    public async signOut() {
+        await this.logout();
+        await this.$router.push('/');
+    }
+
+    public async created() {
+        await this.findAll();
     }
 }
 </script>
