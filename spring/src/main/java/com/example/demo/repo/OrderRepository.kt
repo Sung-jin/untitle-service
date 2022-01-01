@@ -1,12 +1,10 @@
-package com.example.demo.repo;
+package com.example.demo.repo
 
-import com.example.demo.entity.order.Order;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import com.example.demo.entity.order.Order
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findAllOrderByOrderUserId(Long userId);
+interface OrderRepository : JpaRepository<Order?, Long?> {
+    fun findAllOrderByOrderUserId(userId: Long?): List<Order?>?
 }

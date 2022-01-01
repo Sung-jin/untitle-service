@@ -1,14 +1,29 @@
-plugins {
-    id 'org.springframework.boot' version '2.6.2'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
-}
+buildscript {
+    val kotlin = "1.6.0"
 
-apply plugin: 'org.springframework.boot'
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:$kotlin")
+        classpath(kotlin("gradle-plugin", version = kotlin))
+        classpath(kotlin("serialization", version = kotlin))
+        classpath(kotlin("allopen", version = kotlin))
+        classpath(kotlin("noarg", version = kotlin))
+    }
+}
 
 group = 'com.example'
 version = '1.0.0'
 sourceCompatibility = '11'
+
+plugins {
+    kotlin("kapt")
+    kotlin("plugin.jpa")
+    kotlin("plugin.allopen")
+}
 
 configurations {
     compileOnly {
@@ -16,9 +31,9 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-}
+//repositories {
+//    mavenCentral()
+//}
 
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
@@ -43,6 +58,7 @@ dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter:5.4.0')
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.0')
     testImplementation('org.junit.jupiter:junit-jupiter-engine:5.4.0')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin"
 }
 
 test {
@@ -51,4 +67,20 @@ test {
 
 jar {
     enabled = false
+}
+
+//compileKotlin {
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//    }
+//}
+//compileTestKotlin {
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//    }
+//}
+
+
+allOpen {
+    annotation("javax.persistence.Entity")
 }

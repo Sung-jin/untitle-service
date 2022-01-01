@@ -1,58 +1,55 @@
-package com.example.demo.entity.config;
+package com.example.demo.entity.config
 
-import com.example.demo.security.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import com.example.demo.security.*
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Configuration
+import kotlin.Throws
+import org.springframework.security.config.annotation.web.builders.WebSecurity
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import java.lang.Exception
 
 @Configuration
 @EnableWebSecurity
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+class SecurityConfig : WebSecurityConfigurerAdapter {
+    private val userAuthService: UserAuthService
+    private var loginSuccessHandler: LoginSuccessHandler? = null
+    private var loginFailureHandler: LoginFailureHandler? = null
+    private var logoutSuccessHandler: LogoutSuccessHandler? = null
+    private var customBCryptPasswordEncoder: CustomBCryptPasswordEncoder? = null
 
-    private final UserAuthService userAuthService;
-
-    private LoginSuccessHandler loginSuccessHandler;
-
-    private LoginFailureHandler loginFailureHandler;
-
-    private LogoutSuccessHandler logoutSuccessHandler;
-
-    private CustomBCryptPasswordEncoder customBCryptPasswordEncoder;
-
-    public SecurityConfig(UserAuthService userAuthService) {
-        this.userAuthService = userAuthService;
+    constructor(userAuthService: UserAuthService) {
+        this.userAuthService = userAuthService
     }
 
     @Autowired
-    public SecurityConfig(UserAuthService userAuthService, LoginSuccessHandler loginSuccessHandler, LoginFailureHandler loginFailureHandler, LogoutSuccessHandler logoutSuccessHandler, CustomBCryptPasswordEncoder customBCryptPasswordEncoder) {
-        this.userAuthService = userAuthService;
-        this.loginSuccessHandler = loginSuccessHandler;
-        this.loginFailureHandler = loginFailureHandler;
-        this.logoutSuccessHandler = logoutSuccessHandler;
-        this.customBCryptPasswordEncoder = customBCryptPasswordEncoder;
+    constructor(userAuthService: UserAuthService, loginSuccessHandler: LoginSuccessHandler?, loginFailureHandler: LoginFailureHandler?, logoutSuccessHandler: LogoutSuccessHandler?, customBCryptPasswordEncoder: CustomBCryptPasswordEncoder?) {
+        this.userAuthService = userAuthService
+        this.loginSuccessHandler = loginSuccessHandler
+        this.loginFailureHandler = loginFailureHandler
+        this.logoutSuccessHandler = logoutSuccessHandler
+        this.customBCryptPasswordEncoder = customBCryptPasswordEncoder
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
+    @Throws(Exception::class)
+    override fun configure(web: WebSecurity) {
+        super.configure(web)
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userAuthService).passwordEncoder(customBCryptPasswordEncoder);
+    @Throws(Exception::class)
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        auth.userDetailsService(userAuthService).passwordEncoder(customBCryptPasswordEncoder)
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Throws(Exception::class)
+    override fun configure(http: HttpSecurity) {
         http.csrf().disable().authorizeHttpRequests()
                 .antMatchers(
-                    "/users/join",
+                        "/users/join",
                         "/users/session-key"
                 ).permitAll()
                 .anyRequest().authenticated()
@@ -60,6 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().successHandler(loginSuccessHandler).failureHandler(loginFailureHandler)
                 .and()
                 .logout().deleteCookies("remove").invalidateHttpSession(true)
-                .logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
+                .logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler)
     }
 }

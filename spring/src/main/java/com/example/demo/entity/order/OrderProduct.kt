@@ -1,32 +1,30 @@
-package com.example.demo.entity.order;
+package com.example.demo.entity.order
 
-import com.example.demo.entity.product.Product;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import com.example.demo.entity.product.Product
+import com.fasterxml.jackson.annotation.JsonIgnore
+import lombok.AllArgsConstructor
+import lombok.Builder
+import lombok.Getter
+import lombok.NoArgsConstructor
+import javax.persistence.*
 
 @Entity
 @Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderProduct {
+class OrderProduct {
     @Id
     @GeneratedValue
-    private Long id;
+    private val id: Long? = null
 
     @ManyToOne(optional = false)
     @JsonIgnore
-    private Order order;
+    private var order: Order? = null
 
     @OneToOne(optional = false)
-    private Product product;
-
-    public void setOrder(Order order) {
-        this.order = order;
+    private val product: Product? = null
+    fun setOrder(order: Order?) {
+        this.order = order
     }
 }

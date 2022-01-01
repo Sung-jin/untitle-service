@@ -1,36 +1,28 @@
-package com.example.demo.service;
+package com.example.demo.service
 
-import com.example.demo.entity.product.Product;
-import com.example.demo.repo.ProductRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import com.example.demo.entity.product.Product
+import com.example.demo.repo.ProductRepository
+import lombok.extern.slf4j.Slf4j
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Slf4j
-public class ProductService {
-    private final ProductRepository productRepository;
-
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+class ProductService(private val productRepository: ProductRepository) {
+    fun findAll(): List<Product?> {
+        return productRepository.findAll()
     }
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    fun findById(id: Long): Product {
+        return productRepository.findById(id).orElse(null)!!
     }
 
-    public Product findById(Long id) {
-        return productRepository.findById(id).orElse(null);
-    }
-
-    public List<Product> findAllByIds(List<Long> ids) {
-        return productRepository.findAllById(ids);
+    fun findAllByIds(ids: List<Long?>): List<Product?> {
+        return productRepository.findAllById(ids)
     }
 
     @Transactional
-    public Product save(Product product) {
-        return productRepository.save(product);
+    fun save(product: Product): Product {
+        return productRepository.save(product)
     }
 }

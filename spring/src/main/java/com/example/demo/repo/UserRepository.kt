@@ -1,10 +1,10 @@
-package com.example.demo.repo;
+package com.example.demo.repo
 
-import com.example.demo.entity.user.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.entity.user.User
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    User findUserByLoginId(String loginId);
+interface UserRepository : JpaRepository<User?, Long?> {
+    fun findUserByLoginId(loginId: String?): User?
 }

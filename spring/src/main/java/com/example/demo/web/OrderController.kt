@@ -1,32 +1,24 @@
-package com.example.demo.web;
+package com.example.demo.web
 
-import com.example.demo.entity.order.Order;
-import com.example.demo.service.OrderService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import com.example.demo.entity.order.Order
+import com.example.demo.service.OrderService
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/orders")
-public class OrderController {
-    private final OrderService orderService;
-
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
+class OrderController(private val orderService: OrderService) {
     @GetMapping
-    public List<Order> findAllOrderByLoginUser() {
-        return orderService.findAllOrderByLoginUser();
+    fun findAllOrderByLoginUser(): List<Order?>? {
+        return orderService.findAllOrderByLoginUser()
     }
 
     @GetMapping("/{id}")
-    public Order findUserById(@PathVariable Long id) {
-        return orderService.findById(id);
+    fun findUserById(@PathVariable id: Long): Order? {
+        return orderService.findById(id)
     }
 
-    @PostMapping()
-    public Order orderProducts(@RequestBody List<Long> productIds) {
-        return orderService.orderProducts(productIds);
+    @PostMapping
+    fun orderProducts(@RequestBody productIds: List<Long?>): Order? {
+        return orderService.orderProducts(productIds)
     }
 }

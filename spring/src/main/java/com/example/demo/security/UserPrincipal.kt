@@ -1,51 +1,40 @@
-package com.example.demo.security;
+package com.example.demo.security
 
-import com.example.demo.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
+import com.example.demo.entity.user.User
+import lombok.AllArgsConstructor
+import lombok.Getter
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 @AllArgsConstructor
 @Getter
-public class UserPrincipal implements UserDetails {
-
-    private final User user;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+class UserPrincipal : UserDetails {
+    private val user: User? = null
+    override fun getAuthorities(): Collection<GrantedAuthority?> {
+        return null
     }
 
-    @Override
-    public String getPassword() {
-        return user.getPassword();
+    override fun getPassword(): String {
+        return user.getPassword()
     }
 
-    @Override
-    public String getUsername() {
-        return user.getLoginId();
+    override fun getUsername(): String {
+        return user.getLoginId()
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    override fun isAccountNonExpired(): Boolean {
+        return true
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    override fun isAccountNonLocked(): Boolean {
+        return true
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
     }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
+    override fun isEnabled(): Boolean {
+        return true
     }
 }
