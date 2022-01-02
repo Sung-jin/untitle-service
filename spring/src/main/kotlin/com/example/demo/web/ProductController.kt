@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/products")
-class ProductController(private val productService: ProductService) {
+class ProductController(
+    private val productService: ProductService
+) {
     @GetMapping
-    fun findAll(): List<Product?>? {
+    fun findAll(): List<Product> {
         return productService.findAll()
     }
 
@@ -18,7 +20,7 @@ class ProductController(private val productService: ProductService) {
     }
 
     @PostMapping
-    fun save(@RequestBody product: Product): Product? {
+    fun save(@RequestBody product: Product): Product {
         return productService.save(product)
     }
 }

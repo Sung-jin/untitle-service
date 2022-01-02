@@ -4,6 +4,7 @@ import com.example.demo.config.annotation.LocalBootTest
 import com.example.demo.generator.MockUserBuilder
 import com.example.demo.security.CustomBCryptPasswordEncoder
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,6 +20,7 @@ internal class UserServiceTest {
     @Autowired
     private val mockUserBuilder: MockUserBuilder? = null
     private val rawPassword = "password"
+
     @Test
     @DisplayName("회원 가입/조회 테스트")
     @Throws(Exception::class)
@@ -27,12 +29,12 @@ internal class UserServiceTest {
         val user = mockUserBuilder!!.build("demo", "email@demo.com", rawPassword)
 
         // when
-        val result = userService!!.findById(user.getId())
+        val result = userService!!.findById(user.id ?: fail("mock 유저 저장 실패"))
 
         // then
-        Assertions.assertNotNull(result)
-        assertEquals(user.getLoginId(), result.getLoginId())
-        assertEquals(user.getEmail(), result.getEmail())
+        assertNotNull(result)
+        assertEquals(user.loginId, result?.loginId)
+        assertEquals(user.email, result?.email)
     }
 
     @Test
@@ -44,10 +46,11 @@ internal class UserServiceTest {
         val encodePassword = mockUserBuilder.uiEncode(rawPassword)
 
         // when
-        val result = userService!!.findById(user.getId())
+        val result = userService!!.findById(user.id ?: fail("mock 유저 저장 실패"))
 
         // then
-        assertNotEquals(rawPassword, result.getPassword())
-        Assertions.assertTrue(customBCryptPasswordEncoder!!.matches(encodePassword!!, result.getPassword()))
+        assertNotNull(result)
+        assertNotEquals(rawPassword, result?.password)
+        assertTrue(customBCryptPasswordEncoder!!.matches(encodePassword!!, result?.password!!))
     }
 }

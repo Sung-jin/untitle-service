@@ -7,10 +7,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 @Service
-class UserAuthService(@field:Lazy private val userService: UserService) : UserDetailsService {
+class UserAuthService(
+    private val userService: UserService
+) : UserDetailsService {
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(loginId: String): UserDetails {
-        val user = userService.findByLoginId(loginId)
-        return if (user == null) throw UsernameNotFoundException("account is not found. loginId : $loginId") else UserPrincipal(user)
+        return userService.findByLoginId(loginId)?.let {
+            UserPrincipal(it)
+        } ?: throw UsernameNotFoundException("account is not found. loginId : $loginId")
     }
 }

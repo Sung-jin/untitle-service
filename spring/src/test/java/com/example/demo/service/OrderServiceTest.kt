@@ -8,6 +8,8 @@ import com.example.demo.generator.MockUserBuilder
 import com.example.demo.repo.ProductRepository
 import com.example.demo.repo.UserRepository
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.transaction.annotation.Transactional
@@ -32,18 +34,21 @@ internal class OrderServiceTest {
 
     @Autowired
     private val mockUserBuilder: MockUserBuilder? = null
+
     private var testUser: User? = null
     private var products: List<Product>? = null
+
     @BeforeAll
     @Throws(Exception::class)
     fun setUp() {
         testUser = mockUserBuilder!!.build("demo", "email@demo.com", "password")
-        products = Arrays.stream(arrayOf<Product>(
-                Product.builder().name("상품이름 1").price(10000).build(),
-                Product.builder().name("상품이름 2").price(20000).build(),
-                Product.builder().name("상품이름 3").price(30000).build()
-        )).map { product: Product? -> productService!!.save(product!!) }
-                .collect(Collectors.toList())
+        products = listOf(
+            Product(name = "상품이름 1", price = 10000),
+            Product(name = "상품이름 2", price = 20000),
+            Product(name = "상품이름 3", price = 30000)
+        ).map {
+            productService!!.save(it)
+        }
     }
 
     @Test
@@ -51,22 +56,23 @@ internal class OrderServiceTest {
     @WithUserDetails("demo")
     fun orderProductTest() {
         // given
-        val mockProductIds = products!!.stream().map<Any?>(Product::getId).collect(Collectors.toList<Any?>())
+        val mockProductIds = products!!.map { it.id ?: fail("mock 상품 저장 실패") }
         val order = orderService!!.orderProducts(mockProductIds)
 
         // when
         val results = orderService.findAllOrderByLoginUser()
-        val newOrder = results!!.stream().filter { orderByUser: Order? -> orderByUser.getOrderUser().getId().equals(testUser.getId()) }.findFirst().get()
-        val newOrderProductIds: List<Long?> = newOrder.getOrderList().stream().map { o -> o.getProduct().getId() }.collect(Collectors.toList())
+        val newOrder = results.first { it.orderUser.id == testUser?.id }
+        val newOrderProductIds = newOrder.orderList.map { it.product.id }
 
         // then
-        assertEquals(order.getId(), newOrder.getId())
+        assertNotNull(order?.id)
+        assertEquals(order?.id, newOrder.id)
         Assertions.assertTrue(mockProductIds.containsAll(newOrderProductIds))
     }
 
     @AfterAll
     fun teardown() {
-        productRepository!!.deleteAllById(products!!.stream().map<Any>(Product::getId).collect(Collectors.toList()))
-        userRepository!!.delete(testUser)
+        productRepository!!.deleteAllById(products!!.map{ it.id })
+        userRepository!!.delete(testUser!!)
     }
 }

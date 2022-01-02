@@ -13,22 +13,28 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class LoginSuccessHandler(private val mapper: ObjectMapper) : SimpleUrlAuthenticationSuccessHandler() {
+class LoginSuccessHandler(
+    private val mapper: ObjectMapper
+) : SimpleUrlAuthenticationSuccessHandler() {
     private val requestCache: RequestCache = HttpSessionRequestCache()
+
     @Throws(IOException::class, ServletException::class)
     override fun onAuthenticationSuccess(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
         setAuthentication(response, authentication)
         val savedRequest = requestCache.getRequest(request, response)
         val targetUrlParameter = targetUrlParameter
+
         if (savedRequest == null) {
             clearAuthenticationAttributes(request)
             return
         }
-        if (isAlwaysUseDefaultTargetUrl || targetUrlParameter != null && StringUtils.hasText(request.getPart(targetUrlParameter) as CharSequence)) {
+
+        if (isAlwaysUseDefaultTargetUrl || targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter))) {
             requestCache.removeRequest(request, response)
             clearAuthenticationAttributes(request)
             return
         }
+
         clearAuthenticationAttributes(request)
     }
 

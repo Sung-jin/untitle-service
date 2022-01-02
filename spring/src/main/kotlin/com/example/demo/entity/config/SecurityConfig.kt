@@ -15,25 +15,13 @@ import java.lang.Exception
 @Configuration
 @EnableWebSecurity
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
-class SecurityConfig : WebSecurityConfigurerAdapter {
-    private val userAuthService: UserAuthService
-    private var loginSuccessHandler: LoginSuccessHandler? = null
-    private var loginFailureHandler: LoginFailureHandler? = null
-    private var logoutSuccessHandler: LogoutSuccessHandler? = null
-    private var customBCryptPasswordEncoder: CustomBCryptPasswordEncoder? = null
-
-    constructor(userAuthService: UserAuthService) {
-        this.userAuthService = userAuthService
-    }
-
-    @Autowired
-    constructor(userAuthService: UserAuthService, loginSuccessHandler: LoginSuccessHandler?, loginFailureHandler: LoginFailureHandler?, logoutSuccessHandler: LogoutSuccessHandler?, customBCryptPasswordEncoder: CustomBCryptPasswordEncoder?) {
-        this.userAuthService = userAuthService
-        this.loginSuccessHandler = loginSuccessHandler
-        this.loginFailureHandler = loginFailureHandler
-        this.logoutSuccessHandler = logoutSuccessHandler
-        this.customBCryptPasswordEncoder = customBCryptPasswordEncoder
-    }
+class SecurityConfig (
+    private val userAuthService: UserAuthService,
+    private val loginSuccessHandler: LoginSuccessHandler,
+    private val loginFailureHandler: LoginFailureHandler,
+    private val logoutSuccessHandler: LogoutSuccessHandler,
+    private val customBCryptPasswordEncoder: CustomBCryptPasswordEncoder
+) : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(web: WebSecurity) {

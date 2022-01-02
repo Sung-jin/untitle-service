@@ -5,7 +5,6 @@ import com.example.demo.security.AuthenticationSecurityService
 import com.example.demo.service.UserService
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.mock.web.MockHttpSession
@@ -22,7 +21,10 @@ import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 
 @Component
-class MockUserBuilder {
+class MockUserBuilder (
+    private val authenticationSecurityService: AuthenticationSecurityService,
+    private val userService: UserService
+) {
     @Value("\${security.pbkdf2.iteration-count}")
     private val securityIterationCount = 0
 
@@ -35,27 +37,18 @@ class MockUserBuilder {
     @Value("\${security.pbkdf2.iv}")
     private val securityIv: String? = null
 
-    @Autowired
-    private val userService: UserService? = null
-
-    @Autowired
-    private val authenticationSecurityService: AuthenticationSecurityService? = null
     private val session = Mockito.mock(MockHttpSession::class.java)
     private val request = MockHttpServletRequest()
+
     @Throws(Exception::class)
     fun build(loginId: String?, email: String?, password: String?): User {
-        var loginId = loginId
-        var email = email
-        var password = password
-        if (loginId == null) loginId = "demo"
-        if (email == null) email = "demo@demo.com"
-        if (password == null) password = "password"
-        return userService!!.save(
-                User.builder()
-                        .loginId(loginId)
-                        .email(email)
-                        .savePassword(uiEncode(password))
-                        .build()
+        return userService.save(
+            User(
+                loginId = loginId ?: "demo",
+                email = email ?: "demo@demo.com"
+            ).apply {
+                savePassword = uiEncode(password ?: "password")
+            }
         )
     }
 
@@ -64,7 +57,7 @@ class MockUserBuilder {
             val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
             val spec = PBEKeySpec(
                     securityPassphrase!!.toCharArray(),
-                    Hex.decode(authenticationSecurityService!!.saltKey()),
+                    Hex.decode(authenticationSecurityService.saltKey),
                     securityIterationCount,
                     securityKeySize
             )
@@ -79,11 +72,13 @@ class MockUserBuilder {
 
     init {
         MockitoAnnotations.openMocks(this)
-        request.session = session
+
+        request.setSession(session)
         request.requestURI = "/"
         request.remoteAddr = "10.10.10.10"
         request.addHeader("Authorization", "xAuth")
         RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
+
         Mockito.`when`(session.id).thenReturn("c3da74ad-16a7-42c9-998d-b0cbef89d748")
     }
 }

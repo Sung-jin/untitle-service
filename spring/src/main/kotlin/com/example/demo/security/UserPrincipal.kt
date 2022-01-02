@@ -1,25 +1,22 @@
 package com.example.demo.security
 
 import com.example.demo.entity.user.User
-import lombok.AllArgsConstructor
-import lombok.Getter
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-@AllArgsConstructor
-@Getter
-class UserPrincipal : UserDetails {
-    private val user: User? = null
-    override fun getAuthorities(): Collection<GrantedAuthority?> {
+class UserPrincipal (
+    val user: User? = null
+): UserDetails {
+    override fun getAuthorities(): Collection<GrantedAuthority?>? {
         return null
     }
 
     override fun getPassword(): String {
-        return user.getPassword()
+        return user?.password ?: ""
     }
 
     override fun getUsername(): String {
-        return user.getLoginId()
+        return user?.loginId ?: ""
     }
 
     override fun isAccountNonExpired(): Boolean {

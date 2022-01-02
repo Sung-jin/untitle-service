@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/orders")
-class OrderController(private val orderService: OrderService) {
+class OrderController(
+    private val orderService: OrderService
+) {
     @GetMapping
-    fun findAllOrderByLoginUser(): List<Order?>? {
+    fun findAllOrderByLoginUser(): List<Order> {
         return orderService.findAllOrderByLoginUser()
     }
 
@@ -18,7 +20,7 @@ class OrderController(private val orderService: OrderService) {
     }
 
     @PostMapping
-    fun orderProducts(@RequestBody productIds: List<Long?>): Order? {
+    fun orderProducts(@RequestBody productIds: List<Long>): Order? {
         return orderService.orderProducts(productIds)
     }
 }
