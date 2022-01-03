@@ -5,6 +5,7 @@ import com.example.demo.security.AuthenticationSecurityService
 import com.example.demo.service.UserService
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.mock.web.MockHttpSession
@@ -21,10 +22,13 @@ import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 
 @Component
-class MockUserBuilder (
-    private val authenticationSecurityService: AuthenticationSecurityService,
-    private val userService: UserService
-) {
+class MockUserBuilder {
+    @Autowired
+    lateinit var authenticationSecurityService: AuthenticationSecurityService
+
+    @Autowired
+    lateinit var userService: UserService
+
     @Value("\${security.pbkdf2.iteration-count}")
     private val securityIterationCount = 0
 

@@ -12,9 +12,10 @@ import java.util.stream.Collectors
 
 @LocalBootTest
 @Transactional
-internal class ProductServiceTest {
+class ProductServiceTest {
     @Autowired
-    private val productService: ProductService? = null
+    lateinit var productService: ProductService
+
     @Test
     @DisplayName("상품 단일/리스트 조회")
     fun saveUserTest() {
@@ -24,11 +25,11 @@ internal class ProductServiceTest {
             Product(name = "상품이름 2", price = 20000),
             Product(name = "상품이름 3", price = 30000)
         ).map {
-            productService!!.save(it)
+            productService.save(it)
         }
 
         // when
-        val productResult = productService!!.findById(products[0].id ?: fail("mock 상품 저장 실패"))
+        val productResult = productService.findById(products[0].id ?: fail("mock 상품 저장 실패"))
         val productsResult = productService.findAll()
         val productIds = products.map { it.id }
         val productResultIds = productsResult.map { it.id }

@@ -1,6 +1,7 @@
 package com.example.demo.security
 
 import org.apache.tomcat.util.codec.binary.Base64
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.codec.Hex
 import org.springframework.stereotype.Service
@@ -12,9 +13,10 @@ import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 import javax.servlet.http.HttpSession
 
+
 @Service
 class AuthenticationSecurityService (
-        private val httpSession: HttpSession
+    private val httpSession: HttpSession
 ) {
     @Value("\${security.pbkdf2.iteration-count}")
     private val securityIterationCount = 0
@@ -28,14 +30,8 @@ class AuthenticationSecurityService (
     @Value("\${security.pbkdf2.iv}")
     private val securityIv: String? = null
 
-    val saltKey: String = String(
-        Hex.encode(
-            httpSession.id
-                .replace("-", "")
-                .substring(0, 16)
-                .toByteArray(StandardCharsets.UTF_8)
-        )
-    )
+    val saltKey: String
+        get() = String(Hex.encode(httpSession.id.replace("-", "").substring(0, 16).toByteArray()))
 
     @Throws(Exception::class)
     fun decrypt(encryptionText: String): String {

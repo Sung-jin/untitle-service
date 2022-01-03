@@ -10,15 +10,16 @@ import org.springframework.transaction.annotation.Transactional
 
 @LocalBootTest
 @Transactional
-internal class UserServiceTest {
+class UserServiceTest {
     @Autowired
-    private val userService: UserService? = null
+    lateinit var userService: UserService
 
     @Autowired
-    private val customBCryptPasswordEncoder: CustomBCryptPasswordEncoder? = null
+    lateinit var customBCryptPasswordEncoder: CustomBCryptPasswordEncoder
 
     @Autowired
-    private val mockUserBuilder: MockUserBuilder? = null
+    lateinit var mockUserBuilder: MockUserBuilder
+
     private val rawPassword = "password"
 
     @Test
@@ -26,10 +27,10 @@ internal class UserServiceTest {
     @Throws(Exception::class)
     fun saveUserTest() {
         // given
-        val user = mockUserBuilder!!.build("demo", "email@demo.com", rawPassword)
+        val user = mockUserBuilder.build("demo", "email@demo.com", rawPassword)
 
         // when
-        val result = userService!!.findById(user.id ?: fail("mock 유저 저장 실패"))
+        val result = userService.findById(user.id ?: fail("mock 유저 저장 실패"))
 
         // then
         assertNotNull(result)
@@ -42,15 +43,15 @@ internal class UserServiceTest {
     @Throws(Exception::class)
     fun userPasswordEncryptionTest() {
         // given
-        val user = mockUserBuilder!!.build("demo", "email@demo.com", rawPassword)
+        val user = mockUserBuilder.build("demo", "email@demo.com", rawPassword)
         val encodePassword = mockUserBuilder.uiEncode(rawPassword)
 
         // when
-        val result = userService!!.findById(user.id ?: fail("mock 유저 저장 실패"))
+        val result = userService.findById(user.id ?: fail("mock 유저 저장 실패"))
 
         // then
         assertNotNull(result)
         assertNotEquals(rawPassword, result?.password)
-        assertTrue(customBCryptPasswordEncoder!!.matches(encodePassword!!, result?.password!!))
+        assertTrue(customBCryptPasswordEncoder.matches(encodePassword!!, result?.password!!))
     }
 }

@@ -6,9 +6,6 @@ plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
     kotlin("plugin.jpa") version "1.6.10"
-
-//    kotlin("kapt")
-//    kotlin("plugin.allopen")
 }
 
 allprojects {
@@ -36,9 +33,7 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:6.6")
     implementation("ch.qos.logback:logback-classic")
     implementation("ch.qos.logback:logback-core")
-
     implementation("io.github.microutils:kotlin-logging:1.6.22")
-
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")

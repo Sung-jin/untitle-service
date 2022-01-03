@@ -1,7 +1,6 @@
 package com.example.demo.service
 
 import com.example.demo.config.annotation.LocalBootTest
-import com.example.demo.entity.order.Order
 import com.example.demo.entity.product.Product
 import com.example.demo.entity.user.User
 import com.example.demo.generator.MockUserBuilder
@@ -13,27 +12,25 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
-import java.util.stream.Collectors
 
 @LocalBootTest
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class OrderServiceTest {
+class OrderServiceTest {
     @Autowired
-    private val orderService: OrderService? = null
+    lateinit var orderService: OrderService
 
     @Autowired
-    private val productService: ProductService? = null
+    lateinit var productService: ProductService
 
     @Autowired
-    private val userRepository: UserRepository? = null
+    lateinit var userRepository: UserRepository
 
     @Autowired
-    private val productRepository: ProductRepository? = null
+    lateinit var productRepository: ProductRepository
 
     @Autowired
-    private val mockUserBuilder: MockUserBuilder? = null
+    lateinit var mockUserBuilder: MockUserBuilder
 
     private var testUser: User? = null
     private var products: List<Product>? = null
@@ -41,13 +38,13 @@ internal class OrderServiceTest {
     @BeforeAll
     @Throws(Exception::class)
     fun setUp() {
-        testUser = mockUserBuilder!!.build("demo", "email@demo.com", "password")
+        testUser = mockUserBuilder.build("demo", "email@demo.com", "password")
         products = listOf(
             Product(name = "상품이름 1", price = 10000),
             Product(name = "상품이름 2", price = 20000),
             Product(name = "상품이름 3", price = 30000)
         ).map {
-            productService!!.save(it)
+            productService.save(it)
         }
     }
 
@@ -57,7 +54,7 @@ internal class OrderServiceTest {
     fun orderProductTest() {
         // given
         val mockProductIds = products!!.map { it.id ?: fail("mock 상품 저장 실패") }
-        val order = orderService!!.orderProducts(mockProductIds)
+        val order = orderService.orderProducts(mockProductIds)
 
         // when
         val results = orderService.findAllOrderByLoginUser()
@@ -72,7 +69,7 @@ internal class OrderServiceTest {
 
     @AfterAll
     fun teardown() {
-        productRepository!!.deleteAllById(products!!.map{ it.id })
-        userRepository!!.delete(testUser!!)
+        productRepository.deleteAllById(products!!.map{ it.id })
+        userRepository.delete(testUser!!)
     }
 }
