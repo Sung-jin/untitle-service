@@ -14,6 +14,10 @@ security.pbkdf2:
   passphrase: ded1a2c2-9e46-43f9-8983-2faf956a9dc7
   iv: 7f5f1ccbcf7a41913fe438dd6167b66a
 
+jwt:
+  secret-key: J1phTU8uYzw4QU5tXERaWismJz15I2xlMFJ6TFBPLXBwOjBkUUZET3I3NSc2dj4mSnpWUmclLGlvaVVxdUxIRAo=
+# TODO - jwt 연동 테스트 작업 후 private cloud-config 로 옮겨야 함.
+
 ---
 spring.profiles: local
 

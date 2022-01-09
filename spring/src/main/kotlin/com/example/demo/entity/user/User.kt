@@ -15,11 +15,20 @@ data class User (
 
     @Column(nullable = false)
     val email: String
-): Serializable  {
+): Serializable {
     @Column(nullable = false)
     @JsonIgnore
     var password: String? = null
 
     @Transient
     var savePassword: String? = null
+
+    @Transient
+    var accessToken: String? = null
+
+    @Transient
+    var refreshToken: String? = null
+
+    @Transient
+    var expiredTimeIn: Long? = null
 }
