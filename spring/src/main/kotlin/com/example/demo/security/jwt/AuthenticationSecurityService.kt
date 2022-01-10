@@ -1,7 +1,6 @@
-package com.example.demo.security
+package com.example.demo.security.jwt
 
 import org.apache.tomcat.util.codec.binary.Base64
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.codec.Hex
 import org.springframework.stereotype.Service
@@ -30,8 +29,11 @@ class AuthenticationSecurityService (
     @Value("\${security.pbkdf2.iv}")
     private val securityIv: String? = null
 
+//    val saltKey: String
+//        get() = String(Hex.encode(httpSession.id.replace("-", "").substring(0, 16).toByteArray()))
+
     val saltKey: String
-        get() = String(Hex.encode(httpSession.id.replace("-", "").substring(0, 16).toByteArray()))
+        get() = "c3da74ad16a742c9"
 
     @Throws(Exception::class)
     fun decrypt(encryptionText: String): String {

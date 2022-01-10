@@ -1,7 +1,7 @@
 package com.example.demo.generator
 
 import com.example.demo.entity.user.User
-import com.example.demo.security.AuthenticationSecurityService
+import com.example.demo.security.jwt.AuthenticationSecurityService
 import com.example.demo.service.UserService
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -42,7 +42,7 @@ class MockUserBuilder {
     private val securityIv: String? = null
 
     private val session = Mockito.mock(MockHttpSession::class.java)
-    private val request = MockHttpServletRequest()
+//    private val request = MockHttpServletRequest()
 
     @Throws(Exception::class)
     fun build(loginId: String?, email: String?, password: String?): User {
@@ -77,12 +77,15 @@ class MockUserBuilder {
     init {
         MockitoAnnotations.openMocks(this)
 
-        request.setSession(session)
-        request.requestURI = "/"
-        request.remoteAddr = "10.10.10.10"
-        request.addHeader("Authorization", "xAuth")
-        RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
+//        request.setSession(session)
+//        request.requestURI = "/"
+//        request.remoteAddr = "10.10.10.10"
+//        request.addHeader("Authorization", "xAuth")
+//        RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
 
-        Mockito.`when`(session.id).thenReturn("c3da74ad-16a7-42c9-998d-b0cbef89d748")
+//        Mockito.`when`(session.id).thenReturn("c3da74ad-16a7-42c9-998d-b0cbef89d748")
+
+
+        Mockito.`when`(session.id).thenReturn("c3da74ad16a742c9")
     }
 }

@@ -1,21 +1,23 @@
 package com.example.demo.web
 
-import com.example.demo.security.AuthenticationSecurityService
-import com.example.demo.service.UserService
-import com.example.demo.web.dto.Token
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.example.demo.security.jwt.AuthenticationSecurityService
+import com.example.demo.security.jwt.JwtTokenProvider
+import com.example.demo.web.dto.Login
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/auth")
 class AuthController(
-    private val userService: UserService,
-    private val authenticationSecurityService: AuthenticationSecurityService
+    private val authenticationSecurityService: AuthenticationSecurityService,
+    private val jwtTokenProvider: JwtTokenProvider
 ) {
-    @PostMapping("/login")
-    fun login(@RequestBody request: Token.Request) {
+    @GetMapping("/key")
+    fun saltKey(): Map<String, String> = mapOf(
+        "key" to authenticationSecurityService.saltKey
+    )
 
+    @PostMapping("/login")
+    fun login(@RequestBody login: Login): String {
+        return jwtTokenProvider.generateToken(login)
     }
 }

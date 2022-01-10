@@ -16,26 +16,26 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableWebSecurity
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
 class SecurityConfig (
-    private val loginSuccessHandler: LoginSuccessHandler,
-    private val loginFailureHandler: LoginFailureHandler,
-    private val logoutSuccessHandler: LogoutSuccessHandler,
-    private val customBCryptPasswordEncoder: CustomBCryptPasswordEncoder,
+//    private val loginSuccessHandler: LoginSuccessHandler,
+//    private val loginFailureHandler: LoginFailureHandler,
+//    private val logoutSuccessHandler: LogoutSuccessHandler,
+//    private val customBCryptPasswordEncoder: CustomBCryptPasswordEncoder,
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
     private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
 //    private val tokenProvider: TokenProvider,
     private val jwtFilter: JwtFilter,
-    private val userAuthService: UserAuthService
+//    private val userAuthService: UserAuthService
 ) : WebSecurityConfigurerAdapter() {
 
-    @Throws(Exception::class)
-    override fun configure(web: WebSecurity) {
-        super.configure(web)
-    }
-
-    @Throws(Exception::class)
-    override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(userAuthService).passwordEncoder(customBCryptPasswordEncoder)
-    }
+//    @Throws(Exception::class)
+//    override fun configure(web: WebSecurity) {
+//        super.configure(web)
+//    }
+//
+//    @Throws(Exception::class)
+//    override fun configure(auth: AuthenticationManagerBuilder) {
+//        auth.userDetailsService(userAuthService).passwordEncoder(customBCryptPasswordEncoder)
+//    }
 
 //    @Throws(Exception::class)
 //    override fun configure(http: HttpSecurity) {

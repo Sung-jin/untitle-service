@@ -5,7 +5,7 @@ data class Token (
     val response: Response = Response()
 ) {
     data class Request (
-        var id: String? = null,
+        var loginId: String? = null,
         var secret: String? = null
     )
 

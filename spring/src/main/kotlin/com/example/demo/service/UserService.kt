@@ -2,8 +2,8 @@ package com.example.demo.service
 
 import com.example.demo.entity.user.User
 import com.example.demo.repo.UserRepository
-import com.example.demo.security.AuthenticationSecurityService
-import com.example.demo.security.UserPrincipal
+import com.example.demo.security.jwt.AuthenticationSecurityService
+//import com.example.demo.security.UserPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -15,9 +15,9 @@ class UserService(
     private val passwordEncoder: PasswordEncoder,
     private val authenticationSecurityService: AuthenticationSecurityService
 ) {
-    fun loginUserPrincipal(): UserPrincipal {
-        return SecurityContextHolder.getContext().authentication.principal as UserPrincipal
-    }
+//    fun loginUserPrincipal(): UserPrincipal {
+//        return SecurityContextHolder.getContext().authentication.principal as UserPrincipal
+//    }
 
     fun findById(id: Long): User? {
         return userRepository.findById(id).orElse(null)
