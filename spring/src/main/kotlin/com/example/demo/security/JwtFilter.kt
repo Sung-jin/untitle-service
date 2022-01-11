@@ -1,4 +1,4 @@
-package com.example.demo.security.jwt
+package com.example.demo.security
 
 import mu.KLogging
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -14,24 +14,8 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class JwtFilter (
-//    private val tokenProvider: TokenProvider
     private val jwtTokenProvider: JwtTokenProvider
 ): OncePerRequestFilter() {
-//    @Throws(IOException::class, ServletException::class)
-//    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-//        request.getHeader(AUTHORIZATION_HEADER).also {
-//            if (it.isNotEmpty() && it.startsWith(BEARER_PREFIX)) {
-//                val jwt = it.substring(BEARER_PREFIX.length)
-//
-//                if (tokenProvider.validateToken(jwt)) {
-//                    SecurityContextHolder.getContext().authentication = tokenProvider.getAuthentication(jwt)
-//                }
-//            }
-//        }
-//
-//        filterChain.doFilter(request, response)
-//    }
-
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         try {

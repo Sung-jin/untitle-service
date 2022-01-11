@@ -1,4 +1,4 @@
-package com.example.demo.security.jwt
+package com.example.demo.security
 
 import com.example.demo.service.UserService
 import com.example.demo.web.dto.Login
@@ -13,7 +13,7 @@ import java.util.*
 
 @Component
 class JwtTokenProvider (
-    private val passwordDecoder: PasswordDecoder,
+    private val passwordDecoder: AuthenticationSecurityService,
     private val userService: UserService,
     @Value("\${jwt.secret-key}") private val secretKey: String
 ) {

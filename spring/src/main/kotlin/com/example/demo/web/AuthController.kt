@@ -1,7 +1,7 @@
 package com.example.demo.web
 
-import com.example.demo.security.jwt.AuthenticationSecurityService
-import com.example.demo.security.jwt.JwtTokenProvider
+import com.example.demo.security.AuthenticationSecurityService
+import com.example.demo.security.JwtTokenProvider
 import com.example.demo.web.dto.Login
 import org.springframework.web.bind.annotation.*
 
