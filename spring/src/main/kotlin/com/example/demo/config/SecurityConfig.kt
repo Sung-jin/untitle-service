@@ -1,4 +1,4 @@
-package com.example.demo.entity.config
+package com.example.demo.config
 
 import com.example.demo.security.*
 import org.springframework.context.annotation.Configuration
@@ -7,11 +7,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession
 
 @Configuration
 @EnableWebSecurity
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
 class SecurityConfig (
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
     private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
@@ -29,8 +27,9 @@ class SecurityConfig (
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authorizeHttpRequests()
             .antMatchers(
-                "/users/join",
-                "/users/session-key"
+                "/user/join",
+                "/auth/key",
+                "/auth/login"
             ).permitAll()
             .anyRequest().authenticated()
     }

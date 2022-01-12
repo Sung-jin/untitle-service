@@ -10,8 +10,8 @@ class OrderController(
     private val orderService: OrderService
 ) {
     @GetMapping
-    fun findAllOrderByLoginUser(): List<Order> {
-        return orderService.findAllOrderByLoginUser()
+    fun findAllOrderByLoginUser(@RequestParam token: String): List<Order> {
+        return orderService.findAllOrderByLoginUser(token)
     }
 
     @GetMapping("/{id}")
@@ -20,7 +20,7 @@ class OrderController(
     }
 
     @PostMapping
-    fun orderProducts(@RequestBody productIds: List<Long>): Order? {
-        return orderService.orderProducts(productIds)
+    fun orderProducts(@RequestParam token: String, @RequestBody productIds: List<Long>): Order? {
+        return orderService.orderProducts(token, productIds)
     }
 }

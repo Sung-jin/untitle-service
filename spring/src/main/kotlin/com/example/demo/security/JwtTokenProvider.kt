@@ -1,5 +1,6 @@
 package com.example.demo.security
 
+import com.example.demo.entity.user.User
 import com.example.demo.service.UserService
 import com.example.demo.web.dto.Login
 import io.jsonwebtoken.*
@@ -38,13 +39,14 @@ class JwtTokenProvider (
         } ?: throw IllegalArgumentException("User does not exist.")
     }
 
-    fun getUserIdFromJWT(token: String): String {
-        return Jwts.parserBuilder()
+    fun getUserFromJWT(token: String): User {
+        val loginId = Jwts.parserBuilder()
             .setSigningKey(secretKey)
             .build()
             .parseClaimsJws(token)
             .body
             .subject
+        return userService.findByLoginId(loginId) ?: throw IllegalArgumentException("Not found user by request token")
     }
 
     fun validateToken(token: String): Boolean {
@@ -71,7 +73,7 @@ class JwtTokenProvider (
     }
 
     companion object: KLogging() {
-        private const val ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 // 1 분
-        private const val REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 5 // 5 분
+        private const val ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 5 // 5 분
+        private const val REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 15 // 15 분
     }
 }

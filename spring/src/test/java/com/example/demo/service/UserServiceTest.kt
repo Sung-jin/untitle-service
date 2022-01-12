@@ -4,8 +4,10 @@ import com.example.demo.config.annotation.LocalBootTest
 import com.example.demo.generator.MockUserBuilder
 import com.example.demo.security.AuthenticationSecurityService
 import com.example.demo.security.JwtTokenProvider
-import org.junit.jupiter.api.*
+import com.example.demo.web.dto.Login
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,6 +19,9 @@ class UserServiceTest {
 
     @Autowired
     lateinit var authenticationSecurityService: AuthenticationSecurityService
+
+    @Autowired
+    lateinit var jwtTokenProvider: JwtTokenProvider
 
     @Autowired
     lateinit var mockUserBuilder: MockUserBuilder
@@ -54,5 +59,22 @@ class UserServiceTest {
         assertNotNull(result)
         assertNotEquals(rawPassword, result?.password)
         assertTrue(authenticationSecurityService.matches(encodePassword!!, result?.password!!))
+    }
+
+    @Test
+    @DisplayName("jwt 토큰에 해당되는 유저 조회 테스트")
+    fun jwtUserTest() {
+        // given
+        val user = mockUserBuilder.build("demo", "email@demo.com", rawPassword)
+        val encodePassword = mockUserBuilder.uiEncode(rawPassword)
+        val jwtToken = jwtTokenProvider.generateToken(Login(user.loginId, encodePassword!!))
+
+        // when
+        val userByToken = jwtTokenProvider.getUserFromJWT(jwtToken)
+
+        // then
+        assertTrue(jwtTokenProvider.validateToken(jwtToken))
+        assertEquals(user.id, userByToken.id)
+        assertEquals(user.loginId, userByToken.loginId)
     }
 }

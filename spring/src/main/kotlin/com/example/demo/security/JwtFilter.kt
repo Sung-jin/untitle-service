@@ -22,7 +22,7 @@ class JwtFilter (
             getJwtFromRequest(request)?.let { jwt ->
                 if (jwtTokenProvider.validateToken(jwt)) {
                     UsernamePasswordAuthenticationToken(
-                        jwtTokenProvider.getUserIdFromJWT(jwt), null, null
+                        jwtTokenProvider.getUserFromJWT(jwt), null, null
                     ).apply {
                         this.details = WebAuthenticationDetailsSource().buildDetails(request)
                         SecurityContextHolder.getContext().authentication = this

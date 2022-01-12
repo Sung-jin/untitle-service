@@ -6,6 +6,8 @@ import com.example.demo.entity.user.User
 import com.example.demo.generator.MockUserBuilder
 import com.example.demo.repo.ProductRepository
 import com.example.demo.repo.UserRepository
+import com.example.demo.security.JwtTokenProvider
+import com.example.demo.web.dto.Login
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -30,15 +32,19 @@ class OrderServiceTest {
     lateinit var productRepository: ProductRepository
 
     @Autowired
+    lateinit var jwtTokenProvider: JwtTokenProvider
+
+    @Autowired
     lateinit var mockUserBuilder: MockUserBuilder
 
+    private val rawPassword = "password"
     private var testUser: User? = null
     private var products: List<Product>? = null
 
     @BeforeAll
     @Throws(Exception::class)
     fun setUp() {
-        testUser = mockUserBuilder.build("demo", "email@demo.com", "password")
+        testUser = mockUserBuilder.build("demo", "email@demo.com", rawPassword)
         products = listOf(
             Product(name = "상품이름 1", price = 10000),
             Product(name = "상품이름 2", price = 20000),
@@ -50,20 +56,22 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("상품 주문 테스트")
-    @WithUserDetails("demo")
     fun orderProductTest() {
         // given
+        val jwtToken = jwtTokenProvider.generateToken(
+            Login(testUser?.loginId ?: "", mockUserBuilder.uiEncode(rawPassword) ?: "")
+        )
         val mockProductIds = products!!.map { it.id ?: fail("mock 상품 저장 실패") }
-        val order = orderService.orderProducts(mockProductIds)
+        val order = orderService.orderProducts(jwtToken, mockProductIds)
 
         // when
-        val results = orderService.findAllOrderByLoginUser()
+        val results = orderService.findAllOrderByLoginUser(jwtToken)
         val newOrder = results.first { it.orderUser.id == testUser?.id }
         val newOrderProductIds = newOrder.orderList.map { it.product.id }
 
         // then
-        assertNotNull(order?.id)
-        assertEquals(order?.id, newOrder.id)
+        assertNotNull(order.id)
+        assertEquals(order.id, newOrder.id)
         Assertions.assertTrue(mockProductIds.containsAll(newOrderProductIds))
     }
 
