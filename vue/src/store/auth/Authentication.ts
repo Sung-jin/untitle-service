@@ -29,25 +29,18 @@ export default class Authentication extends VuexModule {
 
     @Action
     public async logout() {
-        // console.log(createRouter({}))
-        // try {
-        //     await $axios.put('/api/auth/logout', {
-        //         headers: {'content-type': 'application/x-www-form-urlencoded'},
-        //     });
-        //     $axios.defaults.headers.common['Authorization'] = '';
-        //     // await useRouter().push('/');
-        //     // console.log(this.context);
-        //
-        // } catch (e) {
-        //     console.log('logout error : ', e);
-        // }
+        try {
+            await $axios.put('/api/auth/logout');
+            $axios.defaults.headers.common['Authorization'] = '';
+        } catch (e) {
+            console.log('logout error : ', e);
+        }
 
         // this.context.commit('setAuthentication', null);
     }
 
     @Action
-    // @ts-ignore
-    public async login({username, password}) {
+    public async login({username, password}: {username: string, password: string}) {
         let payload;
 
         try {
@@ -63,7 +56,7 @@ export default class Authentication extends VuexModule {
             $axios.defaults.headers.common['Authorization'] = `Bearer ${payload.data}`
             // this.context.commit('setAuthentication', payload);
             // TODO - token 저장 방식을 쿠키나 웹 세션 등 좋은 형태로 저장할 방법을 찾고 적용하기
-            await this.context.dispatch('User/setCurrentUser', this.userPrincipal.user, {root: true});
+            // await this.context.dispatch('User/setCurrentUser', this.userPrincipal.user, {root: true});
 
             return true;
         } else {

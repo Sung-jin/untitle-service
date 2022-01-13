@@ -23,7 +23,7 @@
                 <div class="gird mt-6">
                     <div class="flex justify-content-center">
                         <p-button class="mr-3" @click="go('/product')">{{ '상품 목록' }}</p-button>
-                        <p-button class="ml-3" @click="logout()">{{ '로그아웃' }}</p-button>
+                        <p-button class="ml-3" @click="signOut()">{{ '로그아웃' }}</p-button>
                     </div>
                 </div>
             </template>

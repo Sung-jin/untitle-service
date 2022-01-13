@@ -16,15 +16,6 @@ class SecurityConfig (
     private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
     private val jwtFilter: JwtFilter
 ) : WebSecurityConfigurerAdapter() {
-    override fun configure(web: WebSecurity) {
-        web.ignoring().antMatchers(
-            "/users/join",
-            "/auth/key",
-            "/auth/login",
-            "/auth/logout"
-        )
-    }
-
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
@@ -36,7 +27,13 @@ class SecurityConfig (
             .and()
             .formLogin().disable().headers().frameOptions().disable()
             .and()
-            .authorizeHttpRequests()
+            .authorizeRequests()
+            .antMatchers(
+                "/users/join",
+                "/auth/key",
+                "/auth/login",
+                "/auth/logout"
+            ).permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)

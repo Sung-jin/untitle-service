@@ -6,13 +6,10 @@ import com.example.demo.entity.user.User
 import com.example.demo.generator.MockUserBuilder
 import com.example.demo.repo.ProductRepository
 import com.example.demo.repo.UserRepository
-import com.example.demo.security.JwtTokenProvider
-import com.example.demo.web.dto.Login
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.transaction.annotation.Transactional
 
 @LocalBootTest
@@ -30,9 +27,6 @@ class OrderServiceTest {
 
     @Autowired
     lateinit var productRepository: ProductRepository
-
-    @Autowired
-    lateinit var jwtTokenProvider: JwtTokenProvider
 
     @Autowired
     lateinit var mockUserBuilder: MockUserBuilder
@@ -56,7 +50,8 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("상품 주문 테스트")
-    @WithUserDetails("demo")
+    // 이러한 형태로 특정 loginId 에 해당되는 유저로 로그인 한 것처럼
+    // 모든 요청에 jwt 토큰이 들어가서 동작하는 형태의 annotation 추가 필요
     fun orderProductTest() {
         // given
         val mockProductIds = products!!.map { it.id ?: fail("mock 상품 저장 실패") }
