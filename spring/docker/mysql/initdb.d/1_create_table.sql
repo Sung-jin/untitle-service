@@ -1,3 +1,4 @@
+CREATE DATABASE anypoint_20220113;
 CREATE DATABASE demo;
 USE demo;
 

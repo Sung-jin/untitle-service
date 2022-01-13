@@ -3,6 +3,7 @@ package com.example.demo.config
 import com.example.demo.security.*
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -15,6 +16,15 @@ class SecurityConfig (
     private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
     private val jwtFilter: JwtFilter
 ) : WebSecurityConfigurerAdapter() {
+    override fun configure(web: WebSecurity) {
+        web.ignoring().antMatchers(
+            "/users/join",
+            "/auth/key",
+            "/auth/login",
+            "/auth/logout"
+        )
+    }
+
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
@@ -24,13 +34,11 @@ class SecurityConfig (
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .formLogin().disable().headers().frameOptions().disable()
+            .and()
             .authorizeHttpRequests()
-            .antMatchers(
-                "/user/join",
-                "/auth/key",
-                "/auth/login"
-            ).permitAll()
             .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 }

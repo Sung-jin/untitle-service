@@ -20,22 +20,20 @@ class OrderService(
         return orderRepository.findById(id).orElse(null)
     }
 
-    fun findAllOrderByLoginUser(token: String): List<Order> {
+    fun findAllOrderByLoginUser(): List<Order> {
         return orderRepository.findAllOrderByOrderUserId(
-            jwtTokenProvider.getUserFromJWT(token).id!!
-//            (SecurityContextHolder.getContext().authentication.principal as User).id!!
+            (SecurityContextHolder.getContext().authentication.principal as User).id!!
         )
     }
 
     @Transactional
-    fun orderProducts(token: String, productIds: List<Long>): Order {
+    fun orderProducts(productIds: List<Long>): Order {
         return orderRepository.save(
             Order(
                 orderList = productService
                     .findAllByIds(productIds)
                     .map { product -> OrderProduct(product = product) },
-                orderUser = jwtTokenProvider.getUserFromJWT(token)
-//                orderUser = (SecurityContextHolder.getContext().authentication.principal as User).id!!
+                orderUser = (SecurityContextHolder.getContext().authentication.principal as User)
             ).prepareSave()
         )
     }

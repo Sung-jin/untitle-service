@@ -56,16 +56,14 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("상품 주문 테스트")
+    @WithUserDetails("demo")
     fun orderProductTest() {
         // given
-        val jwtToken = jwtTokenProvider.generateToken(
-            Login(testUser?.loginId ?: "", mockUserBuilder.uiEncode(rawPassword) ?: "")
-        )
         val mockProductIds = products!!.map { it.id ?: fail("mock 상품 저장 실패") }
-        val order = orderService.orderProducts(jwtToken, mockProductIds)
+        val order = orderService.orderProducts(mockProductIds)
 
         // when
-        val results = orderService.findAllOrderByLoginUser(jwtToken)
+        val results = orderService.findAllOrderByLoginUser()
         val newOrder = results.first { it.orderUser.id == testUser?.id }
         val newOrderProductIds = newOrder.orderList.map { it.product.id }
 

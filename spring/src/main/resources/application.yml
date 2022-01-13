@@ -36,6 +36,6 @@ spring:
     url: jdbc:mysql://mysql-demo/demo?characterEncoding=utf8&useUnicode=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull
     username: demo
     password: '1q2w3e4r'
-  redis:
-    host: redis-demo
-    port: 6379
+#  redis:
+#    host: redis-demo
+#    port: 6379

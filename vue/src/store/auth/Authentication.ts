@@ -2,7 +2,6 @@
 import {Action, Module, Mutation, VuexModule} from "vuex-module-decorators";
 import {UserPrincipal} from '@/store/user/user';
 import {UserEntity} from '@/store/user/types';
-import {useRouter} from 'vue-router';
 import * as CryptoJS from 'crypto-js';
 import {$axios} from '@/plugins/axios';
 
@@ -30,37 +29,40 @@ export default class Authentication extends VuexModule {
 
     @Action
     public async logout() {
-        try {
-            await $axios.put('/api/logout', {
-                headers: {'content-type': 'application/x-www-form-urlencoded'},
-            });
-        } catch (e) {
-            console.log('logout error : ', e);
-        }
+        // console.log(createRouter({}))
+        // try {
+        //     await $axios.put('/api/auth/logout', {
+        //         headers: {'content-type': 'application/x-www-form-urlencoded'},
+        //     });
+        //     $axios.defaults.headers.common['Authorization'] = '';
+        //     // await useRouter().push('/');
+        //     // console.log(this.context);
+        //
+        // } catch (e) {
+        //     console.log('logout error : ', e);
+        // }
 
-        this.context.commit('setAuthentication', null);
+        // this.context.commit('setAuthentication', null);
     }
 
     @Action
     // @ts-ignore
     public async login({username, password}) {
-        const params = new URLSearchParams();
-        password = await this.context.dispatch('createEncryptPassword', password);
-        params.append('username', username);
-        params.append('password', password);
-
         let payload;
 
         try {
-            payload = await $axios.post('/api/login', params, {
-                headers: {'content-type': 'application/x-www-form-urlencoded'},
-            });
+            payload = await $axios.post('/api/auth/login', {
+                loginId: username,
+                encodedPassword: await this.context.dispatch('createEncryptPassword', password)
+            })
         } catch (e) {
             console.log('occurred error in login');
         }
 
         if (payload && payload.status === 200) {
-            this.context.commit('setAuthentication', payload);
+            $axios.defaults.headers.common['Authorization'] = `Bearer ${payload.data}`
+            // this.context.commit('setAuthentication', payload);
+            // TODO - token 저장 방식을 쿠키나 웹 세션 등 좋은 형태로 저장할 방법을 찾고 적용하기
             await this.context.dispatch('User/setCurrentUser', this.userPrincipal.user, {root: true});
 
             return true;
@@ -71,7 +73,7 @@ export default class Authentication extends VuexModule {
 
     @Action
     public async createEncryptPassword(passwordText: string) {
-        const payload: any = await $axios.get('/api/users/session-key');
+        const payload: any = await $axios.get('/api/auth/key');
         if (payload) {
             const saltKey: string = payload.data.key;
             const encrypted = CryptoJS.AES.encrypt(
