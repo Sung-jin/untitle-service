@@ -1,5 +1,6 @@
 package com.example.demo.service
 
+import com.example.demo.config.annotation.JwtLoginUser
 import com.example.demo.config.annotation.LocalBootTest
 import com.example.demo.entity.product.Product
 import com.example.demo.entity.user.User
@@ -50,8 +51,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("상품 주문 테스트")
-    // 이러한 형태로 특정 loginId 에 해당되는 유저로 로그인 한 것처럼
-    // 모든 요청에 jwt 토큰이 들어가서 동작하는 형태의 annotation 추가 필요
+    @JwtLoginUser(loginId = "demo")
     fun orderProductTest() {
         // given
         val mockProductIds = products!!.map { it.id ?: fail("mock 상품 저장 실패") }

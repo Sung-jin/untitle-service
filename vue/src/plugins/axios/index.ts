@@ -4,6 +4,7 @@ import store from '@/store';
 
 const $axios = axios.create();
 $axios.defaults.timeout = 2000;
+$axios.defaults.headers.common['Authorization'] = '';
 
 $axios.interceptors.request.use(function (config) {
     store.commit('Loadings/pushLoadingStack');

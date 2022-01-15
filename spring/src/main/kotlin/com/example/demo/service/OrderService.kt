@@ -28,6 +28,7 @@ class OrderService(
 
     @Transactional
     fun orderProducts(productIds: List<Long>): Order {
+        val test = SecurityContextHolder.getContext().authentication.principal
         return orderRepository.save(
             Order(
                 orderList = productService

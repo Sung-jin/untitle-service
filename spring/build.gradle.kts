@@ -43,6 +43,12 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.4.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.4.0")
+    testImplementation("com.google.auto.service:auto-service:1.0")
+
+
+//    testImplementation(project(":config.annotation"))
+//    testAnnotationProcessor(":config.annotation.processor")
+//    annotationProcessor(":config.annotation.processor")
 }
 
 tasks.withType<Test> {

@@ -1,9 +1,10 @@
 package com.example.demo.config
 
-import com.example.demo.security.*
+import com.example.demo.security.JwtAccessDeniedHandler
+import com.example.demo.security.JwtAuthenticationEntryPoint
+import com.example.demo.security.JwtFilter
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
