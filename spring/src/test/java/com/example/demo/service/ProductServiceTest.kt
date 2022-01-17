@@ -1,7 +1,8 @@
 package com.example.demo.service
 
 import com.example.demo.config.annotation.LocalBootTest
-import com.example.demo.entity.product.Product
+import com.example.demo.product.domain.Product
+import com.example.demo.product.service.ProductService
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

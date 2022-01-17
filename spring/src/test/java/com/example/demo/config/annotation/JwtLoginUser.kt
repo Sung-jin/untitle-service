@@ -1,6 +1,6 @@
 package com.example.demo.config.annotation
 
-import com.example.demo.repo.UserRepository
+import com.example.demo.user.domain.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContext

@@ -2,9 +2,10 @@ package com.example.demo.service
 
 import com.example.demo.config.annotation.LocalBootTest
 import com.example.demo.generator.MockUserBuilder
-import com.example.demo.security.AuthenticationSecurityService
-import com.example.demo.security.JwtTokenProvider
-import com.example.demo.web.dto.Login
+import com.example.demo.auth.service.AuthenticationSecurityService
+import com.example.demo.auth.service.JwtTokenProvider
+import com.example.demo.user.service.UserService
+import com.example.demo.user.request.Login
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

@@ -2,11 +2,13 @@ package com.example.demo.service
 
 import com.example.demo.config.annotation.JwtLoginUser
 import com.example.demo.config.annotation.LocalBootTest
-import com.example.demo.entity.product.Product
-import com.example.demo.entity.user.User
+import com.example.demo.product.domain.Product
+import com.example.demo.user.domain.User
 import com.example.demo.generator.MockUserBuilder
-import com.example.demo.repo.ProductRepository
-import com.example.demo.repo.UserRepository
+import com.example.demo.order.service.OrderService
+import com.example.demo.product.domain.ProductRepository
+import com.example.demo.product.service.ProductService
+import com.example.demo.user.domain.UserRepository
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull

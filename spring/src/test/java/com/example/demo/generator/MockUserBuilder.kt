@@ -1,8 +1,8 @@
 package com.example.demo.generator
 
-import com.example.demo.entity.user.User
-import com.example.demo.security.AuthenticationSecurityService
-import com.example.demo.service.UserService
+import com.example.demo.user.domain.User
+import com.example.demo.auth.service.AuthenticationSecurityService
+import com.example.demo.user.service.UserService
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.springframework.beans.factory.annotation.Autowired
